@@ -314,7 +314,7 @@ def callAStar(msg):
 	#convert to grid coordinates
 	goalX = int(round((((msg.pose.position.x - offSetX)/resolution) - 0.5), 0))
 	goalY = int(round((((msg.pose.position.y - offSetY)/resolution) - 0.5), 0))
-	
+
 	start = (startX, startY)
 	goal = (goalX, goalY)
 
@@ -363,10 +363,17 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 	waypoints.append(cells[len(cells)-1]) #add the final position to the list of waypoints so we actually get to the goal
 	
 	i = 0 #reset i
-	while i < len(waypoints): #turn our waypoints into poseStampeds
-		turn = math.atan2(((waypoints[i])[0])-((waypoints[i+1])[0]),((waypoints[i])[1])-((waypoints[i+1])[1])) #generate the next heading
-		
-		#convert that angle to a quaternian:
+	while i < len(waypoints-1): #turn our waypoints into poseStampeds, don't run on last element of list
+		turn = atan2(((waypoints[i])[0])-((waypoints[i+1])[0]),((waypoints[i])[1])-((waypoints[i+1])[1])) #generate the next heading
+		poses.append(getPoseStamped(turn, waypoints[i]))
+		i = i+1
+
+	poses.append(getPoseStamped(0, waypoints[len(waypoints-1)])) #can't run the loop on the goal since it looks for the next position
+	
+	return Path(pathHead,poses) #create and return the actual path message/object
+
+def getPoseStamped(turn, pos): #makes a pose stamped given a heading and a tuple for position
+			#convert that angle to a quaternian:
 		quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
 		
 		#create a pose object
@@ -377,8 +384,8 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 		pose.orientation.w = quaternion[3]
 		
 		#set the coordinates (may need conversion later to go from grid coordinates to actual)
-		pose.position.x = (waypoints[i])[0]
-		pose.position.y = (waypoints[i])[1]
+		pose.position.x = pos[0]
+		pose.position.y = pos[1]
 		pose.position.z = 0
 
 		#create header:
@@ -389,13 +396,6 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 		head.frame_id = "waypoint"
 			
 		poseStamped = PoseStamped(head, pose) #create the PoseStamped object
-
-		poses.append(poseStamped)
-
-		i = i+1
-
-	return Path(pathHead,poses)
-
 
 if __name__ == '__main__':
 	rospy.init_node('aStar')
