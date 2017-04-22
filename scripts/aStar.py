@@ -347,13 +347,13 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 
     poses = [] #create the list to store all of the poses (waypoints) as PoseStamped objects
 
-    for i in range(1,(len(waypoints)-1)):#we don't want to check the first or last cels
+    int i = 1;
+    while i < len(waypoints)-1:#we don't want to check the first or last cels
     	#if the waypoint has the same x or y as the ones in front and behind it, no turn is needed, therefore it is not a waypoint
-		print i,len(waypoints)
 		if (waypoints[i-1])[0] == (waypoints[i])[0] == (waypoints[i+1])[0] or (waypoints[i-1])[1] == (waypoints[i])[1] == (waypoints[i+1])[1]:
 			waypoints.remove(waypoints[i])#remove the cell from the list of waypoints
 			print "Point Removed"
-
+		i++
 
         #convert that angle to a quaternian:
         #quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
