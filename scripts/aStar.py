@@ -364,7 +364,7 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 	
 	i = 0 #reset i
 	while i < len(waypoints): #turn our waypoints into poseStampeds
-		turn = atan2(((waypoints[i])[0])-((waypoints[i+1])[0]),((waypoints[i])[1])-((waypoints[i+1])[1])) #generate the next heading
+		turn = math.atan2(((waypoints[i])[0])-((waypoints[i+1])[0]),((waypoints[i])[1])-((waypoints[i+1])[1])) #generate the next heading
 		
 		#convert that angle to a quaternian:
 		quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
