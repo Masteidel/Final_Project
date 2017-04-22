@@ -390,7 +390,8 @@ def getPoseStamped(turn, pos): #makes a pose stamped given a heading and a tuple
 	head.stamp = rospy.get_rostime()
 	head.frame_id = "map"
 
-	pose.header=head
+	pose.pose.header = head
+	pose.header = head
 
 	return PoseStamped #create and return the PoseStamped object
 
