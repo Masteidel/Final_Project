@@ -393,7 +393,7 @@ def getPoseStamped(turn, pos): #makes a pose stamped given a heading and a tuple
 	pose.pose.header = head
 	pose.header = head
 
-	return PoseStamped #create and return the PoseStamped object
+	return pose #create and return the PoseStamped object
 
 if __name__ == '__main__':
 	rospy.init_node('aStar')
