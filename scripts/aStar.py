@@ -347,7 +347,7 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 
     poses = [] #create the list to store all of the poses (waypoints) as PoseStamped objects
 
-    int i = 1;
+    i = 1
     while i < len(waypoints)-1:#we don't want to check the first or last cels
 	print i,len(waypoints)
     	#if the waypoint has the same x or y as the ones in front and behind it, no turn is needed, therefore it is not a waypoint
