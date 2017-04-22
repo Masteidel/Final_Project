@@ -185,8 +185,6 @@ def publishGridCells(path):
 	global gridCellsPub
 
 	head = Header()
-	head.seq = seqNum
-	seqNum += 1
 	head.stamp = rospy.get_rostime()
 	head.frame_id = "map"
 
@@ -284,8 +282,6 @@ def expandWalls(walls): #takes a list of ruples, publishes and returns a list of
 		scaledExpansionList.append((newX,newY))
 
 	head = Header()
-	head.seq = seqNum
-	seqNum += 1
 	head.stamp = rospy.get_rostime()
 	head.frame_id = "map"
 
@@ -393,7 +389,7 @@ def getPoseStamped(turn, pos): #makes a pose stamped given a heading and a tuple
 	head = Header()
 	head.stamp = rospy.get_rostime()
 	head.frame_id = "map"
-	
+
 	pose.header=head
 
 	return PoseStamped #create and return the PoseStamped object
