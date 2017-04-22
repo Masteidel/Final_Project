@@ -1,5 +1,4 @@
 import rospy, tf, numpy, math, random, Queue, collections, heapq
-#from implementation import *
 from kobuki_msgs.msg import BumperEvent
 from std_msgs.msg import String
 from std_msgs.msg import Header
