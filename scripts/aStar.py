@@ -321,7 +321,7 @@ def callAStar(msg):
 	path = reconstruct_path(came_from, start, goal)
 	pathScaled = scalePath(path)
 	publishGridCells(pathScaled)
-	publishPath(pathScaled)
+	publishPath(path)
 
 def publishPath(cells): #takes a list of cells in the order that we wish to visit them and publishes a path message
 	 global pathPub
