@@ -349,7 +349,7 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 
 	i = 1
 	while i < len(waypoints)-1:#we don't want to check the first or last cels
-	print i,len(waypoints)
+		print i,len(waypoints)
 		#if the waypoint has the same x or y as the ones in front and behind it, no turn is needed, therefore it is not a waypoint
 		if (waypoints[i-1])[0] == (waypoints[i])[0] == (waypoints[i+1])[0] or (waypoints[i-1])[1] == (waypoints[i])[1] == (waypoints[i+1])[1]:
 			waypoints.remove(waypoints[i])#remove the cell from the list of waypoints
