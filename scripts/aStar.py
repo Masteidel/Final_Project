@@ -344,7 +344,7 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 	pathHead.frame_id = "aStar_Path"
 	
 	#waypoints = cells #Assume all cells in the path are waypoints until proven otherwise
-
+	waypoints = []
 	poses = [] #create the list to store all of the poses (waypoints) as PoseStamped objects
 
 	i = 1
