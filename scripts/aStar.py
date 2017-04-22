@@ -354,31 +354,33 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 			waypoints.append(cells[i])#remove the cell from the list of waypoints
 		i = i+1
 
+	while i < len(waypoints)-1:
+		turn = atan2(((waypoints[i])[0])-((waypoints[i+1])[0]),((waypoints[i])[1])-((waypoints[i+1])[1]))
 		#convert that angle to a quaternian:
-		#quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
-		#pose = Pose()
-		#pose.orientation.x = quaternion[0]
-		#pose.orientation.y = quaternion[1]
-		#pose.orientation.z = quaternion[2]
-		#pose.orientation.w = quaternion[3]
+		quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
+		pose = Pose()
+		pose.orientation.x = quaternion[0]
+		pose.orientation.y = quaternion[1]
+		pose.orientation.z = quaternion[2]
+		pose.orientation.w = quaternion[3]
 		
 		#set the coordinates (may need conversion later to go from grid coordinates to actual)
-		#pose.position.x = cells[i].x
-		#pose.position.y = cells[i].y
-		#pose.position.z = 0
+		pose.position.x = cells[i].x
+		pose.position.y = cells[i].y
+		pose.position.z = 0
 
 		#create header:
-		#head = Header()
-		#head.seq = seqNum
-		#seqNum += 1
-		#head.stamp = rospy.get_rostime()
-		#head.frame_id = "waypoint"
+		head = Header()
+		head.seq = seqNum
+		seqNum += 1
+		head.stamp = rospy.get_rostime()
+		head.frame_id = "waypoint"
 			
-		#poseStamped = PoseStamped(head, pose) #create the PoseStamped object
+		poseStamped = PoseStamped(head, pose) #create the PoseStamped object
 
-		#poses.append(poseStamped)
-	
-	#return Path(pathHead,poses)
+		poses.append(poseStamped)
+
+	return Path(pathHead,poses)
 
 
 if __name__ == '__main__':
