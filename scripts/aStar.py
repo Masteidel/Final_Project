@@ -373,29 +373,30 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 	return Path(pathHead,poses) #create and return the actual path message/object
 
 def getPoseStamped(turn, pos): #makes a pose stamped given a heading and a tuple for position
-			#convert that angle to a quaternian:
-		quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
-		
-		#create a pose object
-		pose = Pose()
-		pose.orientation.x = quaternion[0]
-		pose.orientation.y = quaternion[1]
-		pose.orientation.z = quaternion[2]
-		pose.orientation.w = quaternion[3]
-		
-		#set the coordinates (may need conversion later to go from grid coordinates to actual)
-		pose.position.x = pos[0]
-		pose.position.y = pos[1]
-		pose.position.z = 0
+	global seqNum
+	#convert that angle to a quaternian:
+	quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
+	
+	#create a pose object
+	pose = Pose()
+	pose.orientation.x = quaternion[0]
+	pose.orientation.y = quaternion[1]
+	pose.orientation.z = quaternion[2]
+	pose.orientation.w = quaternion[3]
+	
+	#set the coordinates (may need conversion later to go from grid coordinates to actual)
+	pose.position.x = pos[0]
+	pose.position.y = pos[1]
+	pose.position.z = 0
 
-		#create header:
-		head = Header()
-		head.seq = seqNum
-		seqNum += 1
-		head.stamp = rospy.get_rostime()
-		head.frame_id = "waypoint"
-			
-		poseStamped = PoseStamped(head, pose) #create the PoseStamped object
+	#create header:
+	head = Header()
+	head.seq = seqNum
+	seqNum += 1
+	head.stamp = rospy.get_rostime()
+	head.frame_id = "waypoint"
+		
+	poseStamped = PoseStamped(head, pose) #create the PoseStamped object
 
 if __name__ == '__main__':
 	rospy.init_node('aStar')
