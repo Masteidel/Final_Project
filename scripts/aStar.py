@@ -355,7 +355,7 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 			waypoints.remove(waypoints[i])#remove the cell from the list of waypoints
 			print "Point Removed"
 		i = i+1
-
+	print waypoints
 		#convert that angle to a quaternian:
 		#quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
 		#pose = Pose()
