@@ -327,11 +327,12 @@ def publishPath(cells): #takes a list of cells in the order that we wish to visi
      global pathPub
 
      print "Publish Path, calling get_Path"
-     path = get_Path(cells)
+     #path = get_Path(cells)
+     get_Path(cells)
      print "Returned from get_Path"
-     pathPub.publish(path)
+     #pathPub.publish(path)
     
-def get_Path(cells): #takes a list of cells in the order that we wish to visit them and returns a path message
+def get_Path(cells): #takes a list of location tuples in the order that we wish to visit them and returns a path message
     print "Get Path"
     global seqNum
 
@@ -342,101 +343,42 @@ def get_Path(cells): #takes a list of cells in the order that we wish to visit t
     pathHead.stamp = rospy.get_rostime()
     pathHead.frame_id = "aStar_Path"
     
+    waypoints = cells #Assume all cells in the path are waypoints until proven otherwise
+
     poses = [] #create the list to store all of the poses (waypoints) as PoseStamped objects
 
-    #keeps track of the next move the robot will make when it is in a given cell, using this notation:
-    #  7 0 1
-    #  6 C 2
-    #  5 4 3
+    for i in range(1,waypoints.len()-1):#we don't want to check the first or last cels
+    	#if the waypoint has the same x or y as the ones in front and behind it, no turn is needed, therefore it is not a waypoint
+		if (waypoints[i-1])[0] == (waypoints[i])[0] == (waypoints[i+1])[0] or (waypoints[i-1])[1] == (waypoints[i])[1] == (waypoints[i+1])[1]:
+			waypoints.remove(waypoints[i])#remove the cell from the list of waypoints
+			print "Point Removed"
+
+
+        #convert that angle to a quaternian:
+        #quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
+        #pose = Pose()
+        #pose.orientation.x = quaternion[0]
+        #pose.orientation.y = quaternion[1]
+        #pose.orientation.z = quaternion[2]
+        #pose.orientation.w = quaternion[3]
+        
+        #set the coordinates (may need conversion later to go from grid coordinates to actual)
+        #pose.position.x = cells[i].x
+        #pose.position.y = cells[i].y
+        #pose.position.z = 0
+
+        #create header:
+        #head = Header()
+        #head.seq = seqNum
+        #seqNum += 1
+        #head.stamp = rospy.get_rostime()
+        #head.frame_id = "waypoint"
+            
+        #poseStamped = PoseStamped(head, pose) #create the PoseStamped object
+
+        #poses.append(poseStamped)
     
-    i = 0
-    #assigns each cell with a code to signify which direction the robot needs to move in to get to the next cell
-    while i < (len(cells) - 1): #doesn't need to run on the last cell
-        if (cells[i+1].x == cells[i].x) and (cells[i+1].y < cells[i].y): #move in negative y direction
-            cells[i].nextMove = 0
-
-        if (cells[i+1].x > cells[i].x) and (cells[i+1].y < cells[i].y): #move in positive x, negative y direction
-            cells[i].nextMove = 1
-
-        if (cells[i+1].x > cells[i].x) and (cells[i+1].y == cells[i].y): #move in positive x direction
-            cells[i].nextMove = 2
-
-        if (cells[i+1].x > cells[i].x) and (cells[i+1].y > cells[i].y): #move in positive x, positive y direction
-            cells[i].nextMove = 3
-
-        if (cells[i+1].x == cells[i].x) and (cells[i+1].y > cells[i].y): #move in positive y direction
-            cells[i].nextMove = 4
-
-        if (cells[i+1].x < cells[i].x) and (cells[i+1].y > cells[i].y): #move in negative x, positive y direction
-            cells[i].nextMove = 5
-
-        if (cells[i+1].x < cells[i].x) and (cells[i+1].y == cells[i].y): #move in negative x direction
-            cells[i].nextMove = 6
-
-        if (cells[i+1].x < cells[i].x) and (cells[i+1].y < cells[i].y): #move in negative x, negative y direction
-            cells[i].nextMove = 7
-        i+=1
-
-        print cells[i].nextMove #Print the direction
-
-    i = 1 #start with the second cell
-    while (i < len(cells)):
-        if not (cells[i].nextMove == cells[i-1].nextMove): #if they are the same, the robot is moving in the right
-                                                           #direction to begin with, and nothing needs to be done
-                                                           #if they aren't the same, our heading needs to change,
-                                                           #so we need a waypoint at that cell
-            if cells[i].nextMove == 0:
-                turn = math.pi #turned to face the -y direction
-            
-            elif cells[i].nextMove == 1:
-                turn = (math.pi)*(5/4) #turned to face the -y, +x direction
-                
-            elif cells[i].nextMove == 2:
-                turn = (math.pi)*(3/2) #turned to face the +x direction
-            
-            elif cells[i].nextMove == 3:
-                turn = (math.pi)*(7/4) #turned to face the +x,+y direction
-
-            elif cells[i].nextMove == 4:
-                turn = 0 #turned to face the +y direction
-
-            elif cells[i].nextMove == 5:
-                turn = (math.pi)*(1/4) #turned to face the -x, +y direction
-
-            elif cells[i].nextMove == 6:
-                turn = (math.pi)*(1/2) #turned to face the -x direction
-
-            elif cells[i].nextMove == 7:
-                turn = (math.pi)*(3/4) #turned to face the -x, -y direction
-
-            #convert that angle to a quaternian:
-            quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
-            pose = Pose()
-            pose.orientation.x = quaternion[0]
-            pose.orientation.y = quaternion[1]
-            pose.orientation.z = quaternion[2]
-            pose.orientation.w = quaternion[3]
-            
-            #set the coordinates (may need conversion later to go from grid coordinates to actual)
-            pose.position.x = cells[i].x
-            pose.position.y = cells[i].y
-            pose.position.z = 0
-
-            #create header:
-            head = Header()
-            head.seq = seqNum
-            seqNum += 1
-            head.stamp = rospy.get_rostime()
-            head.frame_id = "waypoint"
-                
-            poseStamped = PoseStamped(head, pose) #create the PoseStamped object
-
-            poses.append(poseStamped)
-        i+=1
-       #end if
-    #end for loop
-    
-    return Path(pathHead,poses)
+    #return Path(pathHead,poses)
 
 
 if __name__ == '__main__':
