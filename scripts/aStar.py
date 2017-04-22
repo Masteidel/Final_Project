@@ -321,7 +321,7 @@ def callAStar(msg):
 	path = reconstruct_path(came_from, start, goal)
 	pathScaled = scalePath(path)
 	publishGridCells(pathScaled)
-	publishPath(path)
+	publishPath(pathScaled)
 
 def publishPath(cells): #takes a list of cells in the order that we wish to visit them and publishes a path message
 	 global pathPub
@@ -352,13 +352,8 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 		#if the waypoint has the same x or y as the ones in front and behind it, no turn is needed, therefore it is not a waypoint
 		if not ((cells[i-1])[0] == (cells[i])[0] == (cells[i+1])[0] or (cells[i-1])[1] == (cells[i])[1] == (cells[i+1])[1]):
 			waypoints.append(cells[i])#remove the cell from the list of waypoints
-			print "Append"
 		i = i+1
-	print "WAYPOINTS"
-	print waypoints
-	print " "
-	print "CELLS"
-	print cells
+
 		#convert that angle to a quaternian:
 		#quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
 		#pose = Pose()
