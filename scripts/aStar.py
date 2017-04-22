@@ -363,7 +363,7 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 	waypoints.append(cells[len(cells)-1]) #add the final position to the list of waypoints so we actually get to the goal
 	
 	i = 0 #reset i
-	while i < len(waypoints-1): #turn our waypoints into poseStampeds, don't run on last element of list
+	while i < len(waypoints)-1: #turn our waypoints into poseStampeds, don't run on last element of list
 		turn = atan2(((waypoints[i])[0])-((waypoints[i+1])[0]),((waypoints[i])[1])-((waypoints[i+1])[1])) #generate the next heading
 		poses.append(getPoseStamped(turn, waypoints[i]))
 		i = i+1
