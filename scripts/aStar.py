@@ -310,6 +310,7 @@ def callAStar(msg):
 	global resolution
 	global height
 	global width
+	global pathPub
 
 	#convert to grid coordinates
 	goalX = int(round((((msg.pose.position.x - offSetX)/resolution) - 0.5), 0))
@@ -337,6 +338,7 @@ def publishPath(cells): #takes a list of cells in the order that we wish to visi
 	print path	
 	print "Returned from get_Path"
 	pathPub.publish(path)
+	print "Returned from pathPub"
 	
 def get_Path(cells): #takes a list of location tuples in the order that we wish to visit them and returns a path message
 	print "Get Path"
