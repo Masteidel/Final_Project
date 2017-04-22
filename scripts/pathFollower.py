@@ -33,6 +33,7 @@ def navToPose(goal):
     goalPoseAng = yaw                   #orientation of goal
     initialX = xPosition                #Starting x position of turtlebot
     initialY = yPosition                #Starting y position of turtlebot
+    initialAng = math.radians(theta)
     #Rotate towards goal
     if((goalPoseX - initialX) == 0):
         if((goalPoseY - initialY) > 0):
