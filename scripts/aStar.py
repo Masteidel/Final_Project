@@ -330,13 +330,13 @@ def callAStar(msg):
 	publishPath(pathScaled)
 
 def publishPath(cells): #takes a list of cells in the order that we wish to visit them and publishes a path message
-	 global pathPub
+	global pathPub
 
-	 print "Publish Path, calling get_Path"
-	 path = get_Path(cells)
-	 #get_Path(cells)
-	 print "Returned from get_Path"
-	 pathPub.publish(path)
+	print "Publish Path, calling get_Path"
+	path = get_Path(cells)
+	print path	
+	print "Returned from get_Path"
+	pathPub.publish(path)
 	
 def get_Path(cells): #takes a list of location tuples in the order that we wish to visit them and returns a path message
 	print "Get Path"
