@@ -396,7 +396,7 @@ def getPoseStamped(turn, pos): #makes a pose stamped given a heading and a tuple
 	head.stamp = rospy.get_rostime()
 	head.frame_id = "waypoint"
 		
-	poseStamped = PoseStamped(head, pose) #create the PoseStamped object
+	return PoseStamped(head, pose) #create and return the PoseStamped object
 
 if __name__ == '__main__':
 	rospy.init_node('aStar')
