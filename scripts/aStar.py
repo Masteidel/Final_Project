@@ -311,15 +311,21 @@ def callAStar(msg):
 	global height
 	global width
 
+	#convert to grid coordinates
 	goalX = int(round((((msg.pose.position.x - offSetX)/resolution) - 0.5), 0))
 	goalY = int(round((((msg.pose.position.y - offSetY)/resolution) - 0.5), 0))
+	
 	start = (startX, startY)
 	goal = (goalX, goalY)
+
 	expandedGrid = GridWithWeights(width, height)
 	expandedGrid.walls = expandWalls(grid.walls)
+
 	came_from, cost_so_far = a_star_search(expandedGrid, start, goal)
 	path = reconstruct_path(came_from, start, goal)
-	pathScaled = scalePath(path)
+
+	pathScaled = scalePath(path) #convert to "real world" coordinates
+
 	publishGridCells(pathScaled)
 	publishPath(pathScaled)
 
@@ -354,10 +360,16 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 			waypoints.append(cells[i])#remove the cell from the list of waypoints
 		i = i+1
 
-	while i < len(waypoints)-1:
-		turn = atan2(((waypoints[i])[0])-((waypoints[i+1])[0]),((waypoints[i])[1])-((waypoints[i+1])[1]))
+	waypoints.append(cells[len(cells)-1]) #add the final position to the list of waypoints so we actually get to the goal
+	
+	i = 0 #reset i
+	while i < len(waypoints): #turn our waypoints into poseStampeds
+		turn = atan2(((waypoints[i])[0])-((waypoints[i+1])[0]),((waypoints[i])[1])-((waypoints[i+1])[1])) #generate the next heading
+		
 		#convert that angle to a quaternian:
 		quaternion = tf.transformations.quaternion_from_euler(0, 0, turn)
+		
+		#create a pose object
 		pose = Pose()
 		pose.orientation.x = quaternion[0]
 		pose.orientation.y = quaternion[1]
@@ -365,8 +377,8 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 		pose.orientation.w = quaternion[3]
 		
 		#set the coordinates (may need conversion later to go from grid coordinates to actual)
-		pose.position.x = cells[i].x
-		pose.position.y = cells[i].y
+		pose.position.x = (waypoints[i])[0]
+		pose.position.y = (waypoints[i])[1]
 		pose.position.z = 0
 
 		#create header:
@@ -379,6 +391,8 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 		poseStamped = PoseStamped(head, pose) #create the PoseStamped object
 
 		poses.append(poseStamped)
+
+		i = i+1
 
 	return Path(pathHead,poses)
 
