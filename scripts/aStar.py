@@ -368,7 +368,7 @@ def get_Path(cells): #takes a list of location tuples in the order that we wish 
 		poses.append(getPoseStamped(turn, waypoints[i]))
 		i = i+1
 
-	poses.append(getPoseStamped(0, waypoints[len(waypoints-1)])) #can't run the loop on the goal since it looks for the next position
+	poses.append(getPoseStamped(0, waypoints[len(waypoints)-1])) #can't run the loop on the goal since it looks for the next position
 	
 	return Path(pathHead,poses) #create and return the actual path message/object
 
