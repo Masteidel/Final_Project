@@ -227,7 +227,7 @@ def scalePath(path):
 
 	return pathScaled
 
-def expandWalls(walls):
+def expandWalls(walls): #takes a list of ruples, publishes and returns a list of expanded walls (also a list of tuples)
 	global seqNum
 	global offSetX
 	global offSetY
@@ -236,19 +236,41 @@ def expandWalls(walls):
 	expansionList = []
 	scaledExpansionList = []
 	expandedWallList = []
-	for i in walls:
+
+	#for each wall cell make the cells next to it impassible as well
+	for i in walls: 
 		if ((i[0]+1),i[1]) not in expansionList:
 			if ((i[0]+1),i[1]) not in walls:
 				expansionList.append(((i[0]+1),i[1]))
+		
 		if ((i[0]-1),i[1]) not in expansionList:
 			if ((i[0]-1),i[1]) not in walls:
 				expansionList.append(((i[0]-1),i[1]))
+		
 		if (i[0],(i[1]+1)) not in expansionList:
 			if (i[0],(i[1]+1)) not in walls:
 				expansionList.append((i[0],(i[1]+1)))
+		
 		if (i[0],(i[1]-1)) not in expansionList:
 			if (i[0],(i[1]-1)) not in walls:
 				expansionList.append((i[0],(i[1]-1)))
+
+		#Diagonals:
+		if (i[0]+1,(i[1]+1)) not in expansionList:
+			if (i[0]+1,(i[1]+1)) not in walls:
+				expansionList.append((i[0]+1,(i[1]+1)))
+
+		if (i[0]+1,(i[1]-1)) not in expansionList:
+			if (i[0]+1,(i[1]-1)) not in walls:
+				expansionList.append((i[0]+1,(i[1]-1)))
+
+		if (i[0]-1,(i[1]+1)) not in expansionList:
+			if (i[0]-1,(i[1]+1)) not in walls:
+				expansionList.append((i[0]-1,(i[1]+1)))
+
+		if (i[0]-1,(i[1]-1)) not in expansionList:
+			if (i[0]-1,(i[1]-1)) not in walls:
+				expansionList.append((i[0]-1,(i[1]-1)))
 
 	for i in walls:
 		expandedWallList.append((i[0],i[1]))
@@ -316,3 +338,4 @@ if __name__ == '__main__':
 	rospy.sleep(rospy.Duration(1, 0))
 	while(not rospy.is_shutdown()):
 		rospy.sleep(0.15)
+
