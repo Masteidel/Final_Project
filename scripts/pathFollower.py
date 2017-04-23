@@ -159,7 +159,7 @@ def timerCallback(event):
     
     pose = Pose()
     
-    map_list.waitForTransform('/base_link', '/map', rospy.Time.now(), rospy.Duration(0.1))
+    map_list.waitForTransform('/base_link', '/map', rospy.Time.now(), rospy.Duration(1))
     t = map_list.getLatestCommonTime('/base_link', '/map')
     (position, orientation) = map_list.lookupTransform('/base_link', '/map', t) #finds the position and oriention of two objects relative to each other (hint: this returns arrays, while Pose uses lists)            pose.position.x = position[0]
     pose.position.y = position[1]
