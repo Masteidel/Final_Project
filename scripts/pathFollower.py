@@ -160,19 +160,17 @@ def timerCallback(event):
     pose = Pose()
     
     map_list.waitForTransform('/base_link', '/map', rospy.Time.now(), rospy.Duration(0.1))
-    if map_list.frameExists('/base_link') and map_list.frameExists('/map'):
-        t = map_list.getLatestCommonTime('/base_link', '/map')
-        (position, orientation) = map_list.lookupTransform('/base_link', '/map', t) #finds the position and oriention of two objects relative to each other (hint: this returns arrays, while Pose uses lists)
-        pose.position.x = position[0]
-        pose.position.y = position[1]
-        xPosition = position[0]
-        yPosition = position[1]
+    t = map_list.getLatestCommonTime('/base_link', '/map')
+    (position, orientation) = map_list.lookupTransform('/base_link', '/map', t) #finds the position and oriention of two objects relative to each other (hint: this returns arrays, while Pose uses lists)            pose.position.x = position[0]
+    pose.position.y = position[1]
+    xPosition = position[0]
+    yPosition = position[1]
 
-        odomW = orientation
-        q = [odomW[0], odomW[1], odomW[2], odomW[3]]
-        roll, pitch, yaw = euler_from_quaternion(q)
-        pose.orientation.z = yaw
-        theta = math.degrees(yaw)
+    odomW = orientation
+    q = [odomW[0], odomW[1], odomW[2], odomW[3]]
+    roll, pitch, yaw = euler_from_quaternion(q)
+    pose.orientation.z = yaw
+    theta = math.degrees(yaw)
 
 
 
