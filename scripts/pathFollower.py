@@ -19,21 +19,29 @@ def followPath(path):
     wayPoints = path.poses
     for wayPoint in wayPoints: #iterate through the path
         print "Going to next waypoint"
+        print wayPoint
         navToPose(wayPoint) #go to the waypoint
     print "AT TARGET"
 
 #drive to a goal, given as a poseStamped message
 def navToPose(goal):
     global pose
+    global xPosition
+    global yPosition
+    global theta
+    
     goalPoseX = goal.pose.position.x    #x position of the goal
     goalPoseY = goal.pose.position.y    #y position of the goal
     odomW = goal.pose.orientation
     q = [odomW.x, odomW.y, odomW.z, odomW.w]
     roll, pitch, yaw = euler_from_quaternion(q)
     goalPoseAng = yaw                   #orientation of goal
+
     initialX = xPosition                #Starting x position of turtlebot
     initialY = yPosition                #Starting y position of turtlebot
+
     initialAng = math.radians(theta)
+
     #Rotate towards goal
     if((goalPoseX - initialX) == 0):
         if((goalPoseY - initialY) > 0):
@@ -66,6 +74,10 @@ def navToPose(goal):
 #This function accepts a speed and a distance for the robot to move in a straight line
 def driveStraight(speed, distance):
     global pose
+    global pose
+    global xPosition
+    global yPosition
+    global theta
 
     #Initial x and y positions of the turtlebot
     initialX = xPosition
