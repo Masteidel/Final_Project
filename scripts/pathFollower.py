@@ -152,12 +152,12 @@ def timerCallback(event):
     global xPosition
     global yPosition
     global theta
-
+    global map_list
+    
     pose = Pose()
 
-    map_list = tf.TransformListener()
     if map_list.frameExists('/base_link') and map_list.frameExists('/map'):
-        map_list.waitForTransform('/base_link', '/map', rospy.Time(0), rospy.Duration(0.1))
+        #map_list.waitForTransform('/base_link', '/map', rospy.Time(0), rospy.Duration(0.1))
         t = map_list.getLatestCommonTime('/base_link', '/map')
         (position, orientation) = map_list.lookupTransform('/base_link', '/map', t) #finds the position and oriention of two objects relative to each other (hint: this returns arrays, while Pose uses lists)
         pose.position.x = position[0]
@@ -199,6 +199,5 @@ if __name__ == '__main__':
 
     #make the robot keep doing something...
     rospy.Timer(rospy.Duration(0.2), timerCallback)
-    map_list = tf.TransformListener()
     while(not rospy.is_shutdown()):
         rospy.sleep(0.15)
