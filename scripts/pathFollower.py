@@ -18,8 +18,6 @@ def followPath(path):
     print "Path Received"
     wayPoints = path.poses
     for wayPoint in wayPoints: #iterate through the path
-        print "Going to next waypoint"
-        print wayPoint
         navToPose(wayPoint) #go to the waypoint
     print "AT TARGET"
 
