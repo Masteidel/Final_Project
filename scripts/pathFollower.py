@@ -106,7 +106,7 @@ def driveStraight(speed, distance):
 
 #Accepts an angle and makes the robot rotate to it.
 def rotate(angle):
-    global odom_list
+    global map_list
     global pose
     global theta
     #Check if angle is within acceptable range
@@ -155,8 +155,8 @@ def timerCallback(event):
 
     pose = Pose()
 
-    odom_list.waitForTransform('odom', 'base_footprint', rospy.Time(0), rospy.Duration(0.1))
-    (position, orientation) = odom_list.lookupTransform('odom','base_footprint', rospy.Time(0)) #finds the position and oriention of two objects relative to each other (hint: this returns arrays, while Pose uses lists)
+    map_list.waitForTransform('map', 'base_link', rospy.Time(0), rospy.Duration(0.1))
+    (position, orientation) = map_list.lookupTransform('map','base_link', rospy.Time(0)) #finds the position and oriention of two objects relative to each other (hint: this returns arrays, while Pose uses lists)
     pose.position.x = position[0]
     pose.position.y = position[1]
     xPosition = position[0]
@@ -173,21 +173,21 @@ def timerCallback(event):
 #This is the program's main function
 if __name__ == '__main__':
     #Change this node name to include your username
-    rospy.init_node('pathFollower')
+    rospy.init_node('msteidel_lab2_node')
 
     #These are global variables. Write "global <variable_name>" in any other function to gain access to these global variables 
     global pub
     global pose
-    global odom_tf
-    global odom_list
+    global map_tf
+    global map_list
 
     pose = Pose()
     #Replace the elipses '...' in the following lines to set up the publishers and subscribers the lab requires
     pub = rospy.Publisher('cmd_vel_mux/input/teleop', Twist, None, queue_size=10) # Publisher for commanding robot motion
-    rviz_click = rospy.Subscriber('/goal', PoseStamped, navToPose, queue_size=1)
+    #rviz_click = rospy.Subscriber('/goal', PoseStamped, navToPose, queue_size=1)
 
     #Use this object to get the robot's Odometry 
-    odom_list = tf.TransformListener()
+    map_list = tf.TransformListener()
     
     #Use this command to make the program wait for some seconds
     
@@ -196,6 +196,6 @@ if __name__ == '__main__':
 
     #make the robot keep doing something...
     rospy.Timer(rospy.Duration(0.01), timerCallback)
-    odom_list = tf.TransformListener()
+    map_list = tf.TransformListener()
     while(not rospy.is_shutdown()):
         rospy.sleep(0.15)
