@@ -188,7 +188,7 @@ if __name__ == '__main__':
     #Replace the elipses '...' in the following lines to set up the publishers and subscribers the lab requires
     pub = rospy.Publisher('cmd_vel_mux/input/teleop', Twist, None, queue_size=10) # Publisher for commanding robot motion
     #rviz_click = rospy.Subscriber('/goal', PoseStamped, navToPose, queue_size=1)
-
+    path_sub = rospy.Subscriber('aStar_Path', Path, followPath, queue_size=1)
     #Use this object to get the robot's Odometry 
     map_list = tf.TransformListener()
     
