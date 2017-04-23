@@ -198,7 +198,7 @@ if __name__ == '__main__':
     timerCallback(1)
 
     #make the robot keep doing something...
-    rospy.Timer(rospy.Duration(0.01), timerCallback)
+    rospy.Timer(rospy.Duration(0.2), timerCallback)
     map_list = tf.TransformListener()
     while(not rospy.is_shutdown()):
         rospy.sleep(0.15)
