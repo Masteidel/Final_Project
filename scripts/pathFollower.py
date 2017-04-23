@@ -196,7 +196,7 @@ if __name__ == '__main__':
     #Use this command to make the program wait for some seconds
     
     rospy.sleep(rospy.Duration(1, 0))
-    timerCallback(1)
+    #timerCallback(1)
 
     #make the robot keep doing something...
     rospy.Timer(rospy.Duration(0.2), timerCallback)
